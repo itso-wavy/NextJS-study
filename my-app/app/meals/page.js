@@ -1,6 +1,17 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
+
+import MealsGrid from '@/components/meals/meals-grid';
 import classes from './page.module.css';
-import MealItem from '@/components/meals/meal-item';
+import { getMeals } from '@/lib/meal';
+import MealsLoadingPage from './loading-out';
+
+async function Meals() {
+  // 데이터를 가져오는 컴포넌트 분리
+  const meals = await getMeals(); // db 내 data 가져오기 <-> useEffect(()=>fetch, [])
+
+  return <MealsGrid meals={meals} />;
+}
 
 export default function MealsPage() {
   return (
@@ -19,7 +30,10 @@ export default function MealsPage() {
       </header>
 
       <main className={classes.main}>
-        <MealItem title='' slug='' image='' summary='' creator=''></MealItem>
+        {/* <MealsGrid meals={meals} /> */}
+        <Suspense fallback={<MealsLoadingPage />}>
+          <Meals />
+        </Suspense>
       </main>
     </>
   );
