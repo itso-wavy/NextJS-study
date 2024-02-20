@@ -1,14 +1,27 @@
 import Image from 'next/image';
 import classes from './page.module.css';
 import { getMeal } from '@/lib/meal';
-import NotFound from '@/app/not-found';
+import { notFound } from 'next/navigation';
+
+export async function generateMetadata({ params }) {
+  const { slug } = params;
+
+  if (!slug) {
+    notFound();
+  }
+
+  return {
+    title: slug.title,
+    description: slug.summary,
+  };
+}
 
 export default function MealDetailsPage({ params }) {
   const { slug } = params;
   const meal = getMeal(slug);
 
   if (!meal) {
-    NotFound(); // 가장 가까운 error 페이지 또는 not-found 페이지 표시
+    notFound(); // 가장 가까운 error 페이지 또는 not-found 페이지 표시
   }
 
   meal.instructions = meal.instructions.replace(/\n/g, '<br />');

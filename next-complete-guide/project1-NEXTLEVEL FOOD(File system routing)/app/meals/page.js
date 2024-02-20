@@ -6,6 +6,11 @@ import classes from './page.module.css';
 import { getMeals } from '@/lib/meal';
 import MealsLoadingPage from './loading-out';
 
+export const metadata = {
+  title: 'All Meals',
+  description: 'Browse the delicious meals shared by our vibrant community.',
+};
+
 async function Meals() {
   // 데이터를 가져오는 컴포넌트 분리
   const meals = await getMeals(); // db 내 data 가져오기 <-> useEffect(()=>fetch, [])
